@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -7,41 +7,51 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Comment {
-  id                      Int     @id @default(autoincrement())
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @default(now())
-  commentDescription      String
-  author                  User   @relation(fields: [authorId], references: [id])
-  authorId                Int
-  post                    Post @relation(fields: [postId], references: [id])
-  postId                  Int
-}
-
-model Reaction {
-  id                      Int     @id @default(autoincrement())
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @default(now())
-  reactionDescription     String
-  author                  User   @relation(fields: [authorId], references: [id])
-  authorId                Int
-}
-
 model Post {
-  id        Int     @id @default(autoincrement())
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  published Boolean    @default(false)
+  viewCount Int        @default(0)
+  author    User       @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  reactions Reaction[]
   comments  Comment[]
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-  comments Comment[]
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  email     String     @unique
+  name      String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  userType  Int        @default(0)
+  comment   Comment[]
   reactions Reaction[]
+  post      Post[]
+}
+
+model Reaction {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  author              User     @relation(fields: [authorId], references: [id])
+  authorId            String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  reactionDescription String
+  post                Post     @relation(fields: [postId], references: [id])
+  postId              String
+
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
