@@ -12,7 +12,7 @@ services:
 
   mongo:
     image: mongo
-    restart: always
+    restart: unless-stopped
     container_name: mongodb-container
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -23,7 +23,7 @@ services:
       - mongodb:/data/db
   redis:
     image: redis:alpine
-    restart: always
+    restart: unless-stopped
     container_name: redis-container
     ports:
       - 6379:6379
