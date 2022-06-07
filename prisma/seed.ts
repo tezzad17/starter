@@ -1,18 +1,11 @@
 import { PrismaClient, Prisma } from '@prisma/client'
+const prisma = new PrismaClient()
 
-const prisma = new PrismaClient();
 
-const userData = Prisma.UserCreateInput[] = [
+const userData : Prisma.UserCreateInput[] = [
     {
-        email:"email@gmail.com",
-        name: "luis",
-        posts:{
-            create: {
-                title: "",
-                content: "",
-                published: true
-            }
-        }
+        email: "email@gmail.com",
+        name: "luis"
     }
 ]
 

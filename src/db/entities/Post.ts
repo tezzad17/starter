@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Reaction } from './Reaction';
 import { User } from './User';
+import { Comment } from './Comment';
 
 @ObjectType()
 export class Post {

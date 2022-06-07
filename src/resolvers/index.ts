@@ -5,6 +5,7 @@ export const mutation = {
     UserMutation
 }
 
-export const query = [
+export const query = {
     UserQuery
-]
+}
+
