@@ -17,4 +17,30 @@ export class UserQuery {
         return ctx.prisma.user.findFirst()
     }
 
+    @Query(() => [User])
+    async userById(@Ctx() ctx: Context, params: { userId: string }) {
+        return ctx.prisma.user.findUnique({
+            where: {
+                id: params.userId
+            }
+        });
+        
+    }
+
+    @Query(() => String)
+    async userNameEmail(@Ctx() ctx: Context, params: { userId: string }) {
+        const user = await ctx.prisma.user.findUnique({
+            where: {
+                id: params.userId
+            }
+        });
+
+        if (!user){
+            throw new Error(`user not found with id ${params.userId}`)
+        }
+
+        return `${user.name}-${user.email}`;
+        
+    }
+
 }

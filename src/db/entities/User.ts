@@ -16,7 +16,7 @@ export class User {
     email: string
 
     @Field((type) => String, { nullable: true })
-    name?: string | null
+    name: string | null
 
     @Field()
     userType?: number
